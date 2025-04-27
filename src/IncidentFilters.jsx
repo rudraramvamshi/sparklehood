@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaPlus } from "react-icons/fa6";
+import { FaPlus, FaMinus } from 'react-icons/fa';
 
 const IncidentFilters = ({
   dropdownRef,
@@ -10,11 +10,32 @@ const IncidentFilters = ({
   sortOrder,
   setSortOrder,
   formVisible,
-  setFormVisible
+  setFormVisible,
+  searchQuery,
+  setSearchQuery
 }) => (
-  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-    <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
-      {/* Severity Filter */}
+  <div className="flex flex-col gap-6 mb-6">
+
+    {/* Search Bar Full Width */}
+    <div className="relative w-full">
+      <input
+        type="text"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Search incidents..."
+        className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
+      />
+      <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z" />
+        </svg>
+      </div>
+    </div>
+
+    {/* Filters Row */}
+    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+
+      {/* Severity Dropdown */}
       <div className="relative w-full sm:w-60" ref={dropdownRef}>
         <label className="block text-sm font-medium text-gray-700 mb-1">Filter by Severity</label>
         <button
@@ -29,9 +50,7 @@ const IncidentFilters = ({
             {['All', 'Low', 'Medium', 'High'].map(option => (
               <button
                 key={option}
-                className={`w-full px-4 py-2 text-left hover:bg-gray-100 ${
-                  severityFilter === option ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
-                }`}
+                className={`w-full px-4 py-2 text-left hover:bg-gray-100 ${severityFilter === option ? 'bg-blue-50 text-blue-600' : 'text-gray-700'}`}
                 onClick={() => {
                   setSeverityFilter(option);
                   setIsOpen(false);
@@ -44,7 +63,7 @@ const IncidentFilters = ({
         )}
       </div>
 
-      {/* Sort Filter */}
+      {/* Sort Dropdown */}
       <div className="w-full sm:w-60">
         <label className="block text-sm font-medium text-gray-700 mb-1">Sort by Date</label>
         <select
@@ -56,16 +75,17 @@ const IncidentFilters = ({
           <option value="oldest">Oldest First</option>
         </select>
       </div>
-    </div>
 
-    {/* Report New Incident Button */}
-    <button
-  onClick={() => setFormVisible(!formVisible)}
-  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center mt-4 md:mt-0"
->
-  <FaPlus className="mr-2" />
-  {formVisible ? 'Cancel' : 'Report New Incident'}
-</button>
+      {/* Report New Incident Button */}
+      <button
+        onClick={() => setFormVisible(!formVisible)}
+        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center mt-4 md:mt-0"
+      >
+        {formVisible ? <FaMinus className="mr-2" /> : <FaPlus className="mr-2" />}
+        {formVisible ? 'Cancel' : 'Report New Incident'}
+      </button>
+
+    </div>
 
   </div>
 );

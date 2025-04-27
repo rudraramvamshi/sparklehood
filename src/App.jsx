@@ -5,6 +5,8 @@ import IncidentFilters from './IncidentFilters';
 import IncidentList from './IncidentList';
 import Footer from './Footer';
 
+
+
 const App = () => {
   const dropdownRef = useRef(null);
   const [incidents, setIncidents] = useState([
